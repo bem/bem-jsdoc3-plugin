@@ -36,7 +36,7 @@ exports.defineTags = function(dictionary) {
 
         onTagged: function(doclet, tag) {
             var nameVal = tag.value.split(/\s+/),
-                          mod = {};
+                mod = {};
 
             if (nameVal.length >= 3) {
                 mod.elemName = nameVal.shift();
