@@ -28,7 +28,10 @@ function genBlockDocs(data, blockName) {
         events: genBlockEvents(data, blockName)
     };
 }
-
+/**
+ * Generates description for a bem entity by merging
+ * doclets descriptions from all levels
+ */
 function genEntityDescription(data, kind, entityName) {
     return data({kind: kind, name: entityName}).select('description').join('\n\n');
 }
@@ -63,6 +66,12 @@ function genMethods(members) {
 
 }
 
+/**
+ * Generates docs for a method.
+ *
+ * Descriptions got merged from all levels. Other params
+ * will not be merged and first non-empty value will be used
+ */
 function genBlockMethod(members, name) {
     var res = {
         name: name,
@@ -147,6 +156,13 @@ function genProperties(members) {
         .distinct('name')
         .map(genProperty.bind(null, members));
 }
+
+/**
+ * Generates docs for a property.
+ *
+ * Descriptions got merged from all levels. Other params
+ * will not be merged and first non-empty value will be used
+ */
 
 function genProperty(members, name) {
     var res = {

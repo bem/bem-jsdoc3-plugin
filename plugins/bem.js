@@ -109,6 +109,11 @@ exports.astNodeVisitor = {
     }
 };
 
+/**
+ * Checks if AST node is `BEM.DOM.decl` call
+ *
+ * @param {Object} node ast node
+ */
 function isBemDomDecl(node) {
     return astMatch(node, {
         type: "CallExpression",
@@ -134,6 +139,12 @@ function isBemDomDecl(node) {
     });
 }
 
+/**
+ * Compares AST node with pattern
+ *
+ * Node and pattern match if all patterns primitive values
+ * are present in a node.
+ */
 function astMatch(node, tpl) {
     if (typeof node !== typeof tpl) {
         return false;
@@ -152,6 +163,15 @@ function isPrimitive(value) {
     return typeof value !== "object";
 }
 
+/**
+ * Constructs a bem entity description
+ * from first argument of `BEM.DOM.decl`
+ *
+ * @param {Object} decl an AST node of a first argument of 
+ * BEM.DOM.decl
+ * @returns {Object} bem entity description with `block`,
+ * `mod`, and `val` keys
+ */
 function getEntity(decl) {
     if (decl.type === "Literal") {
         return {block: decl.value};
@@ -167,6 +187,14 @@ function getEntity(decl) {
 
 }
 
+/**
+ * Returns a value of property by name from
+ * given object literal AST node
+ *
+ * @param {Object} objNode an AST node of an object literal
+ * (node.type is assumed to be equal to "ObjectExpression")
+ * @param {String} name a name of a property to return
+ */
 function getProperty(objNode, name) {
     for (var i=0; i<objNode.properties.length; i++) {
         if (getKey(objNode.properties[i]) === name) {
@@ -175,6 +203,10 @@ function getProperty(objNode, name) {
     }
 }
 
+/**
+ * Returns a key value of a property expression
+ * @param {Object} propNode an AST node of a propery expression
+ */
 function getKey(propNode) {
     if (propNode.key.type === "Literal") {
         return propNode.key.value;
@@ -195,7 +227,15 @@ function getEntityName(entity) {
             (entity.val? '_' + entity.val: '');
 }
 
-
+/**
+ * Constructs new doc comment by appending
+ * custom doc tags (@block, @elem, @mod) to
+ * to source doc comment.
+ *
+ * @param {Object} node AST node to document
+ * @param {Object} entity BEM entity, declared by node
+ * @returns {String} doc comment for a bem entity
+ */
 function getEntityDocComment(node, entity) {
     var comment = ['/**'];
     if (node.leadingComments && node.leadingComments[0]) {
@@ -218,6 +258,14 @@ function getEntityDocComment(node, entity) {
     return comment.join('\n');
 }
 
+/**
+ * Adds bem entity description to a doclet.
+ * This method is called after doclet has
+ * been constructed but before it sent to template.
+ * Its required, because automatically inserted
+ * `@block`, `@elem` and `@mod` keys does not
+ * contain names
+ */
 function addDocletBemEntity(e) {
     var bemEntity = e.code.bemEntity;
     e.doclet.block = bemEntity.block;
@@ -229,12 +277,24 @@ function addDocletBemEntity(e) {
     }
 }
 
+/**
+ * Returns true if passed AST node is a static
+ * methods declaration of BEM.DOM.decl
+ * @param {Object} node an AST node of BEM.DOM.decl argument
+ * @returns {Boolean}
+ */
 function isStaticDecl(node) {
     var parent = node.parent;
     return hasStatic(parent) &&
         parent.arguments[2] === node;
 }
 
+/**
+ * Returns true if `BEM.DOM.decl` AST node has
+ * static methods declaration.
+ * @param {Object} node AST node of BEM.DOM.decl`
+ * @return {Boolean}
+ */
 function hasStatic(node) {
     var args = node.arguments;
     if (!args) {

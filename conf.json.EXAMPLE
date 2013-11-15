@@ -1,0 +1,5 @@
+{
+    "plugins": [
+        "../../../jsdoc-bem/plugins/bem"
+    ]
+}
