@@ -163,7 +163,6 @@ function genProperties(members) {
  * Descriptions got merged from all levels. Other params
  * will not be merged and first non-empty value will be used
  */
-
 function genProperty(members, name) {
     var res = {
         name: name,

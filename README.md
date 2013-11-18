@@ -23,7 +23,7 @@ Path to plugin should be specified relatively to jsdoc binary directory.
 Run using a command:
 
 ```
-jsdoc -d console -t ./path/to/jsdoc-bem/templates/docjson -c ./path/to/config <your js files>
+jsdoc -d console -t ./path/to/jsdoc-bem/templates/docjson -c ./path/to/conf.json <your files/directories>
 ```
 
 Docs will be generated in form of structured JSON and will be printed to STDOUT.

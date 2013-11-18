@@ -1,5 +1,22 @@
+/**
+ * Plugin for extending jsdoc3 with bem-specific tags.
+ *
+ * Adds the following tags:
+ * 1. `@block [name]` for defining blocks JS code.
+ * 2. `@mod [mod name]` and `@val [mod value]` for defining modifiers
+ * JS code. Must be used with `@block` tag.
+ * 3. `@modhandler [elem] [-]mod val` for defining handler function for
+ * modifier setting/unsetting.
+ *
+ * Automatically detects `BEM.DOM.decl` calls, so for the most time
+ * you would not need to use `@block`, `@mod` and `@val` tags.
+ *
+ */
 'use strict';
 
+/**
+ * @see http://usejsdoc.org/about-plugins.html#tag-definitions
+ */
 exports.defineTags = function(dictionary) {
     dictionary.defineTag('block', {
         canHaveType: false,
@@ -57,6 +74,11 @@ exports.defineTags = function(dictionary) {
     });
 };
 
+/**
+ * astNodeVisitor should be used instead of nodeVisitor for
+ * node+esprima.
+ * @see http://usejsdoc.org/about-plugins.html#node-visitors
+ */
 exports.astNodeVisitor = {
     visitNode: function(node, e, parser, currentSourceName) {
         if (isBemDomDecl(node)) {
@@ -112,7 +134,7 @@ exports.astNodeVisitor = {
 /**
  * Checks if AST node is `BEM.DOM.decl` call
  *
- * @param {Object} node ast node
+ * @param {Object} node Mozilla Parser API AST node
  */
 function isBemDomDecl(node) {
     return astMatch(node, {
@@ -222,9 +244,9 @@ function getValue(propNode) {
 }
 
 function getEntityName(entity) {
-        return entity.block +
-            (entity.mod? '_' + entity.mod : '') +
-            (entity.val? '_' + entity.val: '');
+    return entity.block +
+        (entity.mod? '_' + entity.mod : '') +
+        (entity.val? '_' + entity.val: '');
 }
 
 /**
@@ -264,7 +286,10 @@ function getEntityDocComment(node, entity) {
  * been constructed but before it sent to template.
  * Its required, because automatically inserted
  * `@block`, `@elem` and `@mod` keys does not
- * contain names
+ * contain names.
+ * @param {Object} e symbolFound event, generated from
+ * `astNodeVisitor`. At this stage should already have 
+ * doclet property, which contains parsed docs.
  */
 function addDocletBemEntity(e) {
     var bemEntity = e.code.bemEntity;
