@@ -58,7 +58,6 @@ function genMethods(members) {
             .distinct('name')
             .map(genBlockMethod.bind(null, members));
 
-
     return {
         'public': publicMethods,
         'protected': protectedMethods
@@ -79,8 +78,7 @@ function genBlockMethod(members, name) {
         params: [],
         returns: [],
         fires: [],
-        deprecated: false,
-
+        deprecated: false
     };
     members.filter({
         kind: 'function',
@@ -169,7 +167,6 @@ function genProperty(members, name) {
         deprecated: false,
         description: '',
         types: []
-
     };
 
     members.filter({

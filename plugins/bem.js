@@ -82,7 +82,7 @@ exports.defineTags = function(dictionary) {
 exports.astNodeVisitor = {
     visitNode: function(node, e, parser, currentSourceName) {
         if (isBemDomDecl(node)) {
-          if (node.arguments.length < 2) {
+            if (node.arguments.length < 2) {
                 return;
             }
 

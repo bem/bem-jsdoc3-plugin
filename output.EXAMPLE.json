@@ -1,0 +1,145 @@
+{
+    "blockName": "block1",
+    "description": "Block 1 documentation",
+    "staticMembers": {
+        "methods": {
+            "public": [
+                {
+                    "name": "staticMethod",
+                    "description": "Static method doc\n",
+                    "params": [],
+                    "returns": [],
+                    "fires": [],
+                    "deprecated": false
+                }
+            ],
+            "protected": []
+        },
+        "properties": [
+            {
+                "name": "staticProperty",
+                "deprecated": false,
+                "description": "Static property\n",
+                "types": []
+            }
+        ],
+        "modHandlers": []
+    },
+    "instanceMembers": {
+        "methods": {
+            "public": [
+                {
+                    "name": "publicMethod",
+                    "description": "Public method doc",
+                    "params": [
+                        {
+                            "name": "a",
+                            "description": "a parameter",
+                            "optional": true,
+                            "types": [
+                                "Object",
+                                "String"
+                            ],
+                            "default": "1"
+                        }
+                    ],
+                    "returns": [
+                        {
+                            "description": "a return value",
+                            "types": [
+                                "Object"
+                            ]
+                        }
+                    ],
+                    "fires": [
+                        "block1#event:event"
+                    ],
+                    "deprecated": false
+                }
+            ],
+            "protected": [
+                {
+                    "name": "_protectedMethod",
+                    "description": "Protected method doc\n",
+                    "params": [],
+                    "returns": [],
+                    "fires": [],
+                    "deprecated": "since v1.0.0"
+                }
+            ]
+        },
+        "properties": [
+            {
+                "name": "property",
+                "deprecated": false,
+                "description": "Public property\nДоопределение свойства\n",
+                "types": [
+                    "Number"
+                ]
+            }
+        ],
+        "modHandlers": [
+            {
+                "name": "mod",
+                "description": "When mod is set, triggers an event",
+                "elemName": "undefined",
+                "value": "val",
+                "removal": false,
+                "fires": [
+                    "block1#event:event"
+                ]
+            }
+        ]
+    },
+    "mods": [
+        {
+            "name": "mod",
+            "value": "val",
+            "description": "Block modifier documentation",
+            "staticMembers": {
+                "methods": {
+                    "public": [],
+                    "protected": []
+                },
+                "properties": [],
+                "modHandlers": []
+            },
+            "instanceMembers": {
+                "methods": {
+                    "public": [
+                        {
+                            "name": "modMethod",
+                            "description": "Method from modifier\n",
+                            "params": [],
+                            "returns": [],
+                            "fires": [],
+                            "deprecated": false
+                        }
+                    ],
+                    "protected": []
+                },
+                "properties": [],
+                "modHandlers": []
+            }
+        }
+    ],
+    "events": [
+        {
+            "name": "event",
+            "data": {
+                "properties": [
+                    {
+                        "name": "data",
+                        "description": "additional data",
+                        "types": [
+                            "String"
+                        ]
+                    }
+                ],
+                "types": [
+                    "Object"
+                ]
+            }
+        }
+    ]
+}
