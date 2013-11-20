@@ -111,10 +111,13 @@ function genMethodParams(params) {
     if (!params) {
         return [];
     }
-    return params.map(genMethodParam);
+    return params.map(genParam);
 }
 
-function genMethodParam(param) {
+/**
+ * Generates doc for method or event parameter
+ */
+function genParam(param) {
     var res = {
         name: param.name,
         description: param.description,
@@ -229,26 +232,11 @@ function genBlockEvents(data, blockName) {
 function genBlockEvent(doclet) {
     var res =  {
         name: doclet.name,
-        data: {
-            properties: doclet.properties.map(genEventProperty)
-        }
+        params: doclet.params.map(genParam)
     };
 
     if (doclet.type) {
         res.data.types = doclet.type.names;
     }
-    return res;
-}
-
-function genEventProperty(property) {
-    var res = {
-        name: property.name,
-        description: property.description
-    };
-
-    if (property.type) {
-        res.types = property.type.names;
-    }
-
     return res;
 }
