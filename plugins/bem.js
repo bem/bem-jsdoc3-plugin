@@ -46,32 +46,6 @@ exports.defineTags = function(dictionary) {
             doclet.mod.value = tag.value;
         }
     });
-
-    dictionary.defineTag('modhandler', {
-        mustHaveValue: true,
-        canHaveType: false,
-
-        onTagged: function(doclet, tag) {
-            var nameVal = tag.value.split(/\s+/),
-                mod = {};
-
-            if (nameVal.length >= 3) {
-                mod.elemName = nameVal.shift();
-            }
-
-            mod.name = nameVal[0];
-            mod.value = nameVal[1];
-
-            if (mod.name.charAt(0) === '-') {
-                mod.name = mod.name.slice(1);
-                mod.removal = true;
-            }
-
-            doclet.mod = mod;
-            doclet.addTag('name', mod.name);
-            doclet.addTag('kind', 'modhandler');
-        }
-    });
 };
 
 /**

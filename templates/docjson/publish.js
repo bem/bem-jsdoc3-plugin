@@ -41,7 +41,6 @@ function genScopeMembers(data, blockName, scope) {
     return {
         methods: genMethods(members),
         properties: genProperties(members),
-        modHandlers: genModHandlers(members)
     };
 }
 
@@ -186,23 +185,6 @@ function genProperty(members, name) {
     });
 
     return res;
-}
-
-function genModHandlers(members) {
-    return members
-        .filter({kind: 'modhandler'})
-        .map(genModHandler);
-}
-
-function genModHandler(doclet) {
-    return {
-        name: doclet.name,
-        description: doclet.description,
-        elemName: doclet.mod.elemName,
-        value: doclet.mod.value,
-        removal: doclet.mod.removal || false,
-        fires: doclet.fires || []
-    };
 }
 
 function genBlockMods(data, blockName) {
