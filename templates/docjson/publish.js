@@ -1,4 +1,8 @@
 /*global dump:false*/
+/**
+ * @file Template for outputting doc in json format.
+ * Example of output can be seen in output.EXAMPLE.json) file.
+ */
 'use strict';
 exports.publish = function(data, options) {
     data({undocumented: true}).remove();

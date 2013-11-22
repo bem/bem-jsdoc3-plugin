@@ -5,7 +5,7 @@ written using [BEM](http://bem.info/) methodology.
 
 ## Usage
 
-Write [JSDocc config file](http://usejsdoc.org/about-configuring-jsdoc.html) with
+Write [JSDoc config file](http://usejsdoc.org/about-configuring-jsdoc.html) with
 enabled plugin:
 
 ```javascript
@@ -27,3 +27,4 @@ jsdoc -d console -t ./path/to/jsdoc-bem/templates/docjson -c ./path/to/conf.json
 ```
 
 Docs will be generated in form of structured JSON and will be printed to STDOUT.
+Example of output can be seen in [output.EXAMPLE.json](/output.EXAMPLE.json) file.
