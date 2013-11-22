@@ -81,7 +81,8 @@ function genBlockMethod(members, name) {
         params: [],
         returns: [],
         fires: [],
-        deprecated: false
+        deprecated: false,
+        final: false
     };
     members.filter({
         kind: 'function',
@@ -104,6 +105,10 @@ function genBlockMethod(members, name) {
 
         if (doclet.deprecated) {
             res.deprecated = doclet.deprecated;
+        }
+
+        if (doclet.final) {
+            res.final = doclet.final;
         }
     });
 

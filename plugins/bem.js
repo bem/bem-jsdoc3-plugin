@@ -5,8 +5,8 @@
  * 1. `@block [name]` for defining blocks JS code.
  * 2. `@mod [mod name]` and `@val [mod value]` for defining modifiers
  * JS code. Must be used with `@block` tag.
- * 3. `@modhandler [elem] [-]mod val` for defining handler function for
- * modifier setting/unsetting.
+ * 3. `@final` - specifies, that method should not be overriden in
+ * subclasses.
  *
  * Automatically detects `BEM.DOM.decl` calls, so for the most time
  * you would not need to use `@block`, `@mod` and `@val` tags.
@@ -44,6 +44,15 @@ exports.defineTags = function(dictionary) {
         onTagged: function(doclet, tag) {
             doclet.mod = doclet.mod || {};
             doclet.mod.value = tag.value;
+        }
+    });
+
+    dictionary.defineTag('final', {
+        canHaveType: false,
+        canHaveValue: false,
+
+        onTagged: function(doclet, tag) {
+            doclet.final = true;
         }
     });
 };
