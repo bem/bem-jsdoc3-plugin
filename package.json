@@ -1,0 +1,26 @@
+{
+  "name": "jsdoc-bem",
+  "version": "0.1.0-dev",
+  "description": "Plugin for http://usejsdoc.org/ for documenting bem enteties",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bem/bem-jsdoc3-plugin.git"
+  },
+  "keywords": [
+    "jsdoc3",
+    "docs",
+    "bem",
+    "block",
+    "element",
+    "modifier"
+  ],
+  "author": "Sergej Tatarincev <sevinf@yandex-team.ru> (https://github.com/SevInf)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bem/bem-jsdoc3-plugin/issues"
+  },
+  "homepage": "https://github.com/bem/bem-jsdoc3-plugin",
+  "peerDependencies": {
+    "jsdoc": "~3.3.0-alpha2"
+  }
+}
