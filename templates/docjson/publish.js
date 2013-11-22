@@ -4,16 +4,20 @@
  * Example of output can be seen in output.EXAMPLE.json) file.
  */
 'use strict';
+
+var handle = require('jsdoc/lib/jsdoc/util/error').handle;
+
 exports.publish = function(data, options) {
     data({undocumented: true}).remove();
     var blocks = data({kind: 'block'}).distinct('name');
 
     if (blocks.length > 1) {
-        //TODO: throw an error - only 1 block is supported
-        console.log('Error - only 1 block is supported');
-        console.log('Blocks in set:');
-        console.log(blocks.join('\n'));
-        return;
+        var errMsg = [
+            'Error - only 1 block can be documented in one set',
+            'Blocks currently in set:',
+        ].concat(blocks).join('\n');
+
+        handle(new Error(errMsg));
     }
 
     var docs = genBlockDocs(data, blocks[0]);
