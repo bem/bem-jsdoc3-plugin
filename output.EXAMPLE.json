@@ -9,7 +9,6 @@
                     "description": "Static method doc\n",
                     "params": [],
                     "returns": [],
-                    "fires": [],
                     "deprecated": false,
                     "final": false
                 }
@@ -51,7 +50,6 @@
                             ]
                         }
                     ],
-                    "fires": [],
                     "deprecated": false,
                     "final": true
                 }
@@ -62,7 +60,6 @@
                     "description": "Protected method doc\n",
                     "params": [],
                     "returns": [],
-                    "fires": [],
                     "deprecated": "since v1.0.0",
                     "final": false
                 }
@@ -99,7 +96,6 @@
                                     ]
                                 }
                             ],
-                            "fires": [],
                             "deprecated": false,
                             "final": false
                         }
@@ -125,7 +121,6 @@
                                 }
                             ],
                             "returns": [],
-                            "fires": [],
                             "deprecated": false,
                             "final": true
                         }

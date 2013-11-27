@@ -84,7 +84,6 @@ function genBlockMethod(members, name) {
         description: '',
         params: [],
         returns: [],
-        fires: [],
         deprecated: false,
         final: false
     };
@@ -101,10 +100,6 @@ function genBlockMethod(members, name) {
 
         if (res.params.length === 0) {
             res.params  = genMethodParams(doclet.params);
-        }
-
-        if (res.fires.length === 0 && doclet.fires) {
-            res.fires = doclet.fires;
         }
 
         if (doclet.deprecated) {
