@@ -131,7 +131,7 @@ function genParam(param) {
         optional: !!param.optional
     };
     if (param.type) {
-        res.types = param.type.names;
+        res.types = param.type.names.slice(0);
     }
 
     if (param.defaultvalue) {
@@ -153,7 +153,7 @@ function genMethodReturn(methodReturn) {
     };
 
     if (methodReturn.type) {
-        res.types = methodReturn.type.names;
+        res.types = methodReturn.type.names.slice(0);
     }
     return res;
 }
@@ -190,7 +190,7 @@ function genProperty(members, name) {
             res.deprecated = true;
         }
         if (res.types.length === 0 && doclet.type) {
-            res.types = doclet.type.names;
+            res.types = doclet.type.names.slice(0);
         }
     });
 
@@ -230,7 +230,7 @@ function genBlockEvent(doclet) {
         };
 
     if (doclet.type) {
-        res.data.types = doclet.type.names;
+        res.data.types = doclet.type.names.slice(0);
     }
     return res;
 }
