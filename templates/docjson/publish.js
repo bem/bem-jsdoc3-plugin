@@ -126,8 +126,8 @@ function genMethodParams(params) {
  */
 function genParam(param) {
     var res = {
-        name: param.name,
-        description: param.description,
+        name: param.name || '',
+        description: param.description || '',
         optional: !!param.optional
     };
     if (param.type) {
@@ -149,7 +149,7 @@ function genMethodReturns(returns) {
 
 function genMethodReturn(methodReturn) {
     var res = {
-        description: methodReturn.description
+        description: methodReturn.description || ''
     };
 
     if (methodReturn.type) {
@@ -183,7 +183,9 @@ function genProperty(members, name) {
         kind: 'member',
         name: name
     }).each(function(doclet) {
-        res.description += doclet.description + '\n';
+        if (doclet.description) {
+            res.description += doclet.description + '\n';
+        }
         if (doclet.deprected) {
             res.deprecated = true;
         }
@@ -220,10 +222,12 @@ function genBlockEvents(data, blockName) {
 }
 
 function genBlockEvent(doclet) {
-    var res =  {
-        name: doclet.name,
-        params: doclet.params.map(genParam)
-    };
+    var params = doclet.params || [],
+        res =  {
+            name: doclet.name,
+            description: doclet.description || '',
+            params: params.map(genParam)
+        };
 
     if (doclet.type) {
         res.data.types = doclet.type.names;
