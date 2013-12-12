@@ -5,7 +5,7 @@
  */
 'use strict';
 
-var handle = require('jsdoc/lib/jsdoc/util/error').handle;
+//var handle = require('jsdoc/lib/jsdoc/util/error').handle;
 
 exports.publish = function(data, options) {
     data({undocumented: true}).remove();
@@ -27,13 +27,16 @@ exports.publish = function(data, options) {
 
 
 function genBlockDocs(data, blockName) {
+    var members = data({memberof: blockName, access: {'!is': 'private'}});
+
     return {
         blockName: blockName,
         description: genEntityDescription(data, 'block', blockName),
-        staticMembers: genScopeMembers(data, blockName, 'static'),
-        instanceMembers: genScopeMembers(data, blockName, 'instance'),
-        mods: genBlockMods(data, blockName),
-        events: genBlockEvents(data, blockName)
+        jsParams: genBlockParams(data, blockName),
+        methods: genMethods(members),
+        properties: genProperties(members),
+        events: genBlockEvents(members),
+        mods: genBlockMods(data, blockName)
     };
 }
 /**
@@ -44,32 +47,17 @@ function genEntityDescription(data, kind, entityName) {
     return data({kind: kind, name: entityName}).select('description').join('\n\n');
 }
 
-function genScopeMembers(data, blockName, scope) {
-    var members = data({memberof: blockName, scope: scope});
-    return {
-        methods: genMethods(members),
-        properties: genProperties(members),
-    };
+function genBlockParams(data, blockName) {
+    var params = data({kind: 'block', name: blockName}).first().params || []; 
+    return params.map(genParam);
 }
 
 function genMethods(members) {
-
-    var methods = members.filter({kind: 'function'}),
-        publicMethods = methods
-            .filter({access: {isUndefined: true}})
-            .distinct('name')
-            .map(genBlockMethod.bind(null, members)),
-
-        protectedMethods = methods
-            .filter({access: 'protected'})
-            .distinct('name')
-            .map(genBlockMethod.bind(null, members));
-
-    return {
-        'public': publicMethods,
-        'protected': protectedMethods
-    };
-
+    return members.filter({
+            kind: 'function',
+        })
+        .distinct('name')
+        .map(genBlockMethod.bind(null, members));
 }
 
 /**
@@ -94,6 +82,15 @@ function genBlockMethod(members, name) {
         if (doclet.description) {
             res.description += doclet.description + '\n';
         }
+
+        if (!res.access) {
+            res.access = doclet.access;
+        }
+
+        if (!res.scope) {
+            res.scope = doclet.scope;
+        }
+
         if (res.returns.length === 0) {
             res.returns = genMethodReturns(doclet.returns);
         }
@@ -110,6 +107,9 @@ function genBlockMethod(members, name) {
             res.final = doclet.final;
         }
     });
+
+    res.scope = res.scope || 'instance';
+    res.access = res.access || 'public';
 
     return res;
 }
@@ -186,6 +186,15 @@ function genProperty(members, name) {
         if (doclet.description) {
             res.description += doclet.description + '\n';
         }
+
+        if (!res.access) {
+            res.access = doclet.access;
+        }
+
+        if (!res.scope) {
+            res.scope = doclet.scope;
+        }
+
         if (doclet.deprected) {
             res.deprecated = true;
         }
@@ -193,6 +202,9 @@ function genProperty(members, name) {
             res.types = doclet.type.names.slice(0);
         }
     });
+
+    res.scope = res.scope || 'instance';
+    res.access = res.acccess || 'public';
 
     return res;
 }
@@ -204,20 +216,22 @@ function genBlockMods(data, blockName) {
 
 function genBlockMod(data, doclet) {
 
-    var name = doclet.block + '_' + doclet.mod.name + '_' + doclet.mod.value;
+    var name = doclet.block + '_' + doclet.mod.name + '_' + doclet.mod.value,
+        members = data({memberof: name, access: {'!is': 'private'}});
+
     return {
         name: doclet.mod.name,
         value: doclet.mod.value,
+        methods: genMethods(members),
+        properties: genProperties(members),
+        events: genBlockEvents(members),
         description: genEntityDescription(data, 'mod', name),
-        staticMembers: genScopeMembers(data, name, 'static'),
-        instanceMembers: genScopeMembers(data, name, 'instance')
     };
 }
 
-function genBlockEvents(data, blockName) {
-    return data({
+function genBlockEvents(members) {
+    return members.filter({
         kind: 'event',
-        memberof: blockName
     }).map(genBlockEvent);
 }
 
