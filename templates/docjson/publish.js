@@ -11,6 +11,11 @@ exports.publish = function(data, options) {
     data({undocumented: true}).remove();
     var blocks = data({kind: 'block'}).distinct('name');
 
+    if (blocks.length === 0) {
+        //Is there a mod JS?
+        blocks = data({kind: 'mod'}).distinct('block');
+    }
+
     if (blocks.length > 1) {
         var errMsg = [
             'Error - only 1 block can be documented in one set',
