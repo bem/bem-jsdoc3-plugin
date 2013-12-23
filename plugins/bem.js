@@ -65,10 +65,6 @@ exports.defineTags = function(dictionary) {
 exports.astNodeVisitor = {
     visitNode: function(node, e, parser, currentSourceName) {
         if (isBemDomDecl(node)) {
-            if (node.arguments.length < 2) {
-                return;
-            }
-
             var bemEntity = getEntity(node.arguments[0]),
                 name = getEntityName(bemEntity),
                 comment = getEntityDocComment(node, bemEntity);
