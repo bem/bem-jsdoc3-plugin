@@ -64,11 +64,7 @@ exports.defineTags = function(dictionary) {
  */
 exports.astNodeVisitor = {
     visitNode: function(node, e, parser, currentSourceName) {
-        if (isBemDomDecl(node)) {
-            if (node.arguments.length < 2) {
-                return;
-            }
-
+        if (isBemDecl(node)) {
             var bemEntity = getEntity(node.arguments[0]),
                 name = getEntityName(bemEntity),
                 comment = getEntityDocComment(node, bemEntity);
@@ -89,7 +85,7 @@ exports.astNodeVisitor = {
                 addDocletBemEntity,
                 parser.addDocletRef
             ];
-        } else if (node.type === "ObjectExpression" && isBemDomDecl(node.parent)) {
+        } else if (node.type === "ObjectExpression" && isBemDecl(node.parent)) {
             var entityName = getEntityName(getEntity(node.parent.arguments[0])),
                 lends = isStaticDecl(node) ? entityName : entityName + '.prototype';
 
@@ -115,57 +111,44 @@ exports.astNodeVisitor = {
 };
 
 /**
- * Checks if AST node is `BEM.DOM.decl` call
+ * Checks if AST node is `BEM.decl` or `BEM.DOM.decl` call.
  *
  * @param {Object} node Mozilla Parser API AST node
  */
-function isBemDomDecl(node) {
-    return astMatch(node, {
-        type: "CallExpression",
-        callee: {
-            type: "MemberExpression",
-            object: {
-                type: "MemberExpression",
-                object: {
-                    type: "Identifier",
-                    name: "BEM"
-                },
-
-                property: {
-                    type: "Identifier",
-                    name: "DOM"
-                }
-            },
-            property: {
-                type: "Identifier",
-                name: "decl"
-            }
-        }
-    });
-}
-
-/**
- * Compares AST node with pattern
- *
- * Node and pattern match if all patterns primitive values
- * are present in a node.
- */
-function astMatch(node, tpl) {
-    if (typeof node !== typeof tpl) {
+function isBemDecl(node) {
+    if (node.type !== 'CallExpression') {
         return false;
     }
 
-    if (isPrimitive(tpl)) {
-        return node === tpl;
+    if (node.callee.type !== 'MemberExpression') {
+        return false;
     }
 
-    return Object.keys(tpl).every(function(key) {
-        return astMatch(node[key], tpl[key]);
-    });
-}
+    if (node.callee.property.type !== 'Identifier' || node.callee.property.name !== 'decl') {
+        return false;
+    }
 
-function isPrimitive(value) {
-    return typeof value !== "object";
+    var obj = node.callee.object;
+    if (obj.type === "Identifier") {
+        return obj.name === "BEM";
+    }
+
+    if (obj.type === "MemberExpression") {
+        if (obj.object.type !== "Identifier") {
+            return false;
+        }
+
+        if (obj.object.name !== "BEM") {
+            return false;
+        }
+
+        if (obj.property.type !== "Identifier") {
+            return false;
+        }
+
+        return obj.property.name === "DOM";
+    }
+    return false;
 }
 
 /**
