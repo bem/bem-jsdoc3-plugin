@@ -166,11 +166,17 @@ function getEntity(decl) {
     }
 
     if (decl.type === "ObjectExpression") {
-        return {
-            block: getProperty(decl, 'block'),
-            mod: getProperty(decl, 'modName'),
-            val: getProperty(decl, 'modVal')
-        };
+        var base = getProperty(decl, 'baseBlock'),
+            o = {
+                block: getProperty(decl, 'block'),
+                mod: getProperty(decl, 'modName'),
+                val: getProperty(decl, 'modVal')
+            };
+        
+        if (base) {
+            o.base = base;
+        }
+        return o;
     }
 
 }
@@ -260,6 +266,9 @@ function getEntityDocComment(node, entity) {
 function addDocletBemEntity(e) {
     var bemEntity = e.code.bemEntity;
     e.doclet.block = bemEntity.block;
+    if (bemEntity.base) {
+        e.doclet.baseBlock = bemEntity.base;
+    }
     if (bemEntity.mod) {
         e.doclet.mod = {
             name: bemEntity.mod,
