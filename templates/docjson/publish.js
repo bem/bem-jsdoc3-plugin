@@ -5,7 +5,7 @@
  */
 'use strict';
 
-//var handle = require('jsdoc/lib/jsdoc/util/error').handle;
+var handle = require('jsdoc/lib/jsdoc/util/error').handle;
 
 exports.publish = function(data, options) {
     data({undocumented: true}).remove();
@@ -32,17 +32,23 @@ exports.publish = function(data, options) {
 
 
 function genBlockDocs(data, blockName) {
-    var members = data({memberof: blockName, access: {'!is': 'private'}});
+    var members = data({memberof: blockName, access: {'!is': 'private'}}),
+        base = genBlockBase(data, blockName),
+        o = {
+            blockName: blockName,
+            description: genEntityDescription(data, 'block', blockName),
+            jsParams: genBlockParams(data, blockName),
+            methods: genMethods(members),
+            properties: genProperties(members),
+            events: genBlockEvents(members),
+            mods: genBlockMods(data, blockName)
+        };
 
-    return {
-        blockName: blockName,
-        description: genEntityDescription(data, 'block', blockName),
-        jsParams: genBlockParams(data, blockName),
-        methods: genMethods(members),
-        properties: genProperties(members),
-        events: genBlockEvents(members),
-        mods: genBlockMods(data, blockName)
-    };
+    if (base.length > 0) {
+        o.baseBlock = base;
+    }
+
+    return o;
 }
 /**
  * Generates description for a bem entity by merging
@@ -50,6 +56,10 @@ function genBlockDocs(data, blockName) {
  */
 function genEntityDescription(data, kind, entityName) {
     return data({kind: kind, name: entityName}).select('description').join('\n\n');
+}
+
+function genBlockBase(data, name) {
+    return data({kind: 'block', name: name, baseBlock: {isUndefined: false}}).select('baseBlock');
 }
 
 function genBlockParams(data, blockName) {
