@@ -5,7 +5,7 @@
 'use strict';
 
 var dump = require('jsdoc/util/dumper').dump,
-    handle = require('jsdoc/lib/jsdoc/util/error').handle;
+    handle = require('jsdoc/util/error').handle;
 
 exports.publish = function(data, options) {
     data({undocumented: true}).remove();
