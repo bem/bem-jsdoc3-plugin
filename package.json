@@ -1,6 +1,6 @@
 {
   "name": "jsdoc-bem",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Plugin for http://usejsdoc.org/ for documenting bem enteties",
   "repository": {
     "type": "git",
