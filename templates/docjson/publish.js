@@ -1,11 +1,11 @@
-/*global dump:false*/
 /**
  * @file Template for outputting doc in json format.
  * Example of output can be seen in output.EXAMPLE.json) file.
  */
 'use strict';
 
-var handle = require('jsdoc/lib/jsdoc/util/error').handle;
+var dump = require('jsdoc/util/dumper').dump,
+    handle = require('jsdoc/lib/jsdoc/util/error').handle;
 
 exports.publish = function(data, options) {
     data({undocumented: true}).remove();
@@ -27,7 +27,7 @@ exports.publish = function(data, options) {
 
     var docs = genBlockDocs(data, blocks[0]);
 
-    dump(docs);
+    console.log(dump(docs));
 };
 
 
@@ -63,7 +63,7 @@ function genBlockBase(data, name) {
 }
 
 function genBlockParams(data, blockName) {
-    var params = data({kind: 'block', name: blockName}).first().params || []; 
+    var params = data({kind: 'block', name: blockName}).first().params || [];
     return params.map(genParam);
 }
 
